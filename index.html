@@ -498,34 +498,45 @@
               <div class="u-align-left u-container-style u-layout-cell u-right-cell u-size-30 u-white u-layout-cell-2">
                 <div class="u-container-layout u-valign-middle u-container-layout-2">
                   <div class="u-expanded-width u-form u-form-1">
-                    <form action="#" method="POST" class="u-clearfix u-form-spacing-24 u-form-vertical u-inner-form"
+                    <form class="u-clearfix u-form-spacing-24 u-form-vertical u-inner-form"
                       style="padding: 24px;" source="custom" name="form">
+
+                      <input type="hidden" name="formID" value="220730752595054" />
+                      <input type="hidden" name="website" value="" />
+
                       <div class="u-form-group u-form-name u-form-group-1">
-                        <label for="name-3b9a" class="u-form-control-hidden u-label">Name</label>
-                        <input type="text" placeholder="Enter your Name" id="name-3b9a" name="name"
+                        <label for="name-3b9a" class="u-form-control-hidden u-label">First Name</label>
+                        <input type="text" placeholder="Enter your First Name" id="name-3b9a" name="q3_name[first]"
                           class="u-border-2 u-border-black u-border-no-left u-border-no-right u-border-no-top u-input u-input-rectangle u-input-1"
                           required="">
                       </div>
+
+                      <div class="u-form-group u-form-name u-form-group-1">
+                        <label for="name-3b9a" class="u-form-control-hidden u-label">Last Name</label>
+                        <input type="text" placeholder="Enter your Last Name" id="name-3b9a" name="q3_name[last]"
+                          class="u-border-2 u-border-black u-border-no-left u-border-no-right u-border-no-top u-input u-input-rectangle u-input-1"
+                          required="">
+                      </div>
+
                       <div class="u-form-email u-form-group u-form-group-2">
                         <label for="email-3b9a" class="u-form-control-hidden u-label">Email</label>
-                        <input type="email" placeholder="Enter a valid email address" id="email-3b9a" name="email"
+                        <input type="email" placeholder="Enter a valid email address" id="email-3b9a" name="q4_email"
                           class="u-border-2 u-border-black u-border-no-left u-border-no-right u-border-no-top u-input u-input-rectangle u-input-2"
                           required="">
                       </div>
                       <div class="u-form-group u-form-message u-form-group-3">
                         <label for="message-3b9a" class="u-form-control-hidden u-label">Message</label>
-                        <textarea placeholder="Enter your message" rows="4" cols="50" id="message-3b9a" name="message"
+                        <textarea placeholder="Enter your message" rows="4" cols="50" id="message-3b9a" name="q5_enterYour"
                           class="u-border-2 u-border-black u-border-no-left u-border-no-right u-border-no-top u-input u-input-rectangle u-input-3"
                           required=""></textarea>
                       </div>
                       <div class="u-align-left u-form-group u-form-submit u-form-group-4">
                         <a href="#" class="u-black u-btn u-btn-submit u-button-style u-hover-grey-60 u-btn-2">Submit</a>
-                        <input type="submit" value="submit" class="u-form-control-hidden">
+                        <input type="submit" id="submitBtn" value="submit" class="u-form-control-hidden">
                       </div>
-                      <div class="u-form-send-message u-form-send-success"> Thank you! Your message has been sent. </div>
-                      <div class="u-form-send-error u-form-send-message"> Unable to send your message. Please fix errors
-                        then try again. </div>
-                      <input type="hidden" value="" name="recaptchaResponse">
+
+                      <div id="success"></div>
+                      <input type="hidden" class="simple_spc" id="simple_spc" name="simple_spc" value="220730752595054-220730752595054" />
                     </form>
                   </div>
                 </div>
@@ -542,5 +553,47 @@
           double click to start editing the text.</p>
       </div>
     </footer> -->
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script>
+      function serializeObject(data) {
+        var config = {};
+        var a = data.serializeArray().map(function(item) {
+          if ( config[item.name] ) {
+              if ( typeof(config[item.name]) === "string" ) {
+                  config[item.name] = [config[item.name]];
+              }
+              config[item.name].push(item.value);
+          } else {
+              config[item.name] = item.value;
+          };
+        });
+        return config;
+      }    
+
+      $('form').submit(function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const data = serializeObject($('form'));
+        $.ajax({
+          type: "POST",
+          url: "https://submit.jotform.com/submit/220730752595054/",
+          data: data,
+          success: function () {
+            swal({
+              icon: 'success',
+              title: 'Thank you! Your message has been sent.'
+            }).then((result) => {
+              $('form').trigger("reset");
+            })
+          }
+        });
+        return false;
+      });
+    </script>
   </body>
 </html>
